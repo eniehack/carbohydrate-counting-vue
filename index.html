@@ -5,21 +5,82 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>カーボカウント計算機</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.min.js"></script>
 </head>
 <body>
-    <p>インスリンカーボ比:1カーボで<input type="number" step="0.1" min="0">単位</p>
-    <p>主食:<input type="number" step="0.1" min="0">カーボ</p>
-    <p>おかず:<input type="number" step="0.1" min="0">カーボ</p>
-    <p>いも類:<input type="number" step="0.1" min="0">カーボ</p>
-    <p>デザート:<input type="number" step="0.1" min="0">カーボ</p>
-    <p>飲み物:<input type="number" step="0.1" min="0">カーボ</p>
-    <p>食事に対するインスリン量</p>
+    <h1>カーボカウント計算機</h1>
+    <div id="meal">
+        <div class="insulincarbo_ratio">
+            <p>インスリンカーボ比</p>
+            <p>1カーボで<input v-model.number="insulincarbo_ratio" type="number" step="0.1" min="0">単位</p>
+        </div>
+        <p>主食:<input v-model.number="staple" type="number" step="0.1" min="0">カーボ</p>
+        <p>おかず:<input v-model.number="dish" type="number" step="0.1" min="0">カーボ</p>
+        <p>いも類:<input v-model.number="potato" type="number" step="0.1" min="0">カーボ</p>
+        <p>デザート:<input v-model.number="desert" type="number" step="0.1" min="0">カーボ</p>
+        <p>飲み物:<input v-model.number="drink" type="number" step="0.1" min="0">カーボ</p>
+        <p>詳細:{{ meal }} &times; <div class="insulincarbo_ratio">{{ insulincarbo_ratio }}</div> = {{ meal_total }}</p>
+        <h3>食事に対するインスリン量: {{ meal_total }}単位</h3>
+    </div>
+    <div id="bg">
+        <p>インスリン効果値</p>
+        <p>インスリン1単位で<input v-model.number="insulin_effectiveness" type="number" min="0">[mg/dl]低下する</p>
+        <p>目標血糖値:<input v-model.number="targeted_bg" type="number" min="0">[mg/dl]</p>
+        <p>血糖値:<input v-model.number="BloodGlucose" type="number" min="0">[mg/dl]</p>
+        <p>{{ BloodGlucose }} - {{ targeted_bg }} = {{ delta_bg }}</p>
+        <p>{{ delta_bg }} &divide; {{ insulin_effectiveness }} = {{ correct_bg }}</p>
+        <h3>補正インスリン量: {{ correct_bg }}単位</h3>
+    </div>
+    <div id="total">
+        <!--<p>{{ meal_total }} + {{ correct_bg }} = {{ total }}</p>-->
+        <h2>合計:{{ total }}単位</h2>
+    </div>
+    <script>
+        var meal = new Vue({
+            el: '#meal',
+            data: {
+                insulincarbo_ratio: '',
+                staple: '',
+                dish: '',
+                potato: '',
+                desert: '',
+                drink: '',
+            },
+            computed: {
+                meal: function () {
+                    return this.staple + this.dish + this.potato + this.desert + this.drink
+                },
+                meal_total: function () {
+                    return this.meal * this.insulincarbo_ratio
+                },
+            }
+        })
 
-    <p>インスリン効果値:インスリン1単位で<input type="number" min="0">[mg/dl]低下する</p>
-    <p>目標血糖値:<input type="number" min="0">[mg/dl]</p>
-    <p>血糖値:<input type="number" min="0">[mg/dl]</p>
-    <p>補正インスリン量</p>
+        var bg = new Vue({
+            el: '#bg',
+            data: {
+                insulin_effectiveness: '',
+                targeted_bg: '',
+                BloodGlucose: '',
+            },
+            computed: {
+                delta_bg: function() {
+                    return this.BloodGlucose - this.targeted_bg
+                },
+                correct_bg: function () {
+                    return this.delta_bg / this.insulin_effectiveness
+                },
+            }
+        })
 
-    <h3>合計:単位</h3>
+        var total = new Vue({
+            el: '#total',
+            computed: {
+                total: function () {
+                    return bg.correct_bg + meal.meal_total
+                }
+            }
+        })
+    </script>
 </body>
 </html>
