@@ -10,16 +10,14 @@
 <body>
     <h1>カーボカウント計算機</h1>
     <div id="meal">
-        <div class="insulincarbo_ratio">
-            <p>インスリンカーボ比</p>
-            <p>1カーボで<input v-model.number="insulincarbo_ratio" type="number" step="0.1" min="0">単位</p>
-        </div>
+        <p>インスリンカーボ比</p>
+        <p>1カーボで<input v-model.number="insulincarbo_ratio" type="number" step="0.1" min="0">単位</p>
         <p>主食:<input v-model.number="staple" type="number" step="0.1" min="0">カーボ</p>
         <p>おかず:<input v-model.number="dish" type="number" step="0.1" min="0">カーボ</p>
         <p>いも類:<input v-model.number="potato" type="number" step="0.1" min="0">カーボ</p>
         <p>デザート:<input v-model.number="desert" type="number" step="0.1" min="0">カーボ</p>
         <p>飲み物:<input v-model.number="drink" type="number" step="0.1" min="0">カーボ</p>
-        <p>詳細:{{ meal }} &times; <div class="insulincarbo_ratio">{{ insulincarbo_ratio }}</div> = {{ meal_total }}</p>
+        <p>詳細:{{ meal }} &times; {{ insulincarbo_ratio }} = {{ meal_total }}</p>
         <h3>食事に対するインスリン量: {{ meal_total }}単位</h3>
     </div>
     <div id="bg">
@@ -32,7 +30,6 @@
         <h3>補正インスリン量: {{ correct_bg }}単位</h3>
     </div>
     <div id="total">
-        <!--<p>{{ meal_total }} + {{ correct_bg }} = {{ total }}</p>-->
         <h2>合計:{{ total }}単位</h2>
     </div>
     <script>
