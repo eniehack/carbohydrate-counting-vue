@@ -17,8 +17,8 @@
         </div>
             <div class="item item3">
                 <p>合計:<span class="blue">{{ meal }}</span>カーボ</p>
-                <p>詳細:<span class="blue">{{ meal }}</span> &times; <span class="purple">{{ insulincarbo_ratio }}</span> = {{ meal_total }}</p>
-                <h3>食事に対するインスリン量: {{ meal_total }}単位</h3>
+                <p>詳細:<span class="blue">{{ meal }}</span> &times; <span class="purple">{{ insulincarbo_ratio }}</span> = {{ insulinfrommeal }}</p>
+                <h3>食事に対するインスリン量: {{ insulinfrommeal }}単位</h3>
             </div>
         <div class="item item2 form">
             <div class="boader">
@@ -30,8 +30,8 @@
         </div>
         <div class="item item4">
             <p><span class="blue-line">{{ BloodGlucose }}</span> - <span>{{ targeted_bg }}</span> = <span>{{ delta_bg }}</span></p>
-            <p><span>{{ delta_bg }}</span> &divide; <span class="yellow">{{ insulin_effectiveness }}</span> = <span>{{ correct_bg }}</span></p>
-            <h3>補正インスリン量: <span>{{ correct_bg }}</span>単位</h3>
+            <p><span>{{ delta_bg }}</span> &divide; <span class="yellow">{{ insulin_effectiveness }}</span> = <span>{{ insulinfrombg }}</span></p>
+            <h3>補正インスリン量: <span>{{ insulinfrombg }}</span>単位</h3>
         </div>
         <div class="item result">
             <h2>合計:{{ total }}単位</h2>
